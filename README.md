@@ -101,13 +101,13 @@ docker compose ps
    - Log Correlation: Attacker **never** (`No`) reached `/api/verify-mfa` (`SCENARIO75{No}`)
 
 ### Phase 3: Base64 Payload Decoding
-1. **Extract Header Artifact:** Header `X-Forwarded-For` contains Base64 string `UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}` (Encoding: `SCENARIO75{Base64}`, Length: `SCENARIO75{44}`).
+1. **Extract Header Artifact:** Header `X-Forwarded-For` contains Base64 string `U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==` (Encoding: `SCENARIO75{Base64}`, Length: `SCENARIO75{44}`).
 2. **Execute Base64 Decoding in Shell:**
    ```bash
-   echo "UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0" | base64 -d
+   echo "U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==" | base64 -d
    ```
-   - **Raw Decoded Payload:** `PHANTOMGRID{BLUE_L0g_Hunt3r_M4st3r}`
-   - **Assessment Submission Format:** 🏆 **`SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`**
+   - **Decoded Output & Final Blue Flag:** 🏆 **`SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`**
+
 
 ---
 

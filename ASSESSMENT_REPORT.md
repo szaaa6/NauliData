@@ -99,12 +99,12 @@ Blue Team connects via SSH (`ssh analyst@feedback.admin.local -p 2275`) and anal
 - **String Length:** Exactly `44` characters long (Flag: `SCENARIO75{44}`).
 - **Log Severity Level:** Flagged with `CRITICAL` severity (Flag: `SCENARIO75{CRITICAL}`).
 - **Anomaly Warning Timestamp:** Anomaly entry at `18:53:10` (Flag: `SCENARIO75{18:53:10}`) with warning string `Authentication bypass anomaly` (Flag: `SCENARIO75{Authentication bypass anomaly}`).
-- **Base64 Payload Decoding & Assessment Flag Mapping:**
+- **Base64 Payload Decoding:**
   ```bash
-  echo "UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0" | base64 -d
+  echo "U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==" | base64 -d
   ```
-  - **Raw Decoded Payload in Log:** `PHANTOMGRID{BLUE_L0g_Hunt3r_M4st3r}`
-  - **Assessment Submission Format:** `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`
+  - **Decoded Output & Final Blue Team Flag:** `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`
+
 
 
 ---
