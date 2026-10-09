@@ -4,6 +4,7 @@
 **Address:** Gedung Nucira Lantai 1, Jl. MT.Haryono Kav.27 RT. 008 / RW. 009, Kel. Tebet Timur, Kec. Tebet, Kota Jakarta Selatan 12820  
 **Contact:** contact@naulidata.com  
 **Position Applied:** Cybersecurity Engineer (Lab & Range Developer)  
+**Git Repository URL:** https://github.com/szaaa6/NauliData.git  
 **Submission Deliverables:** Git Repository (GitHub/GitLab) + Written Report (PDF/DOCX) + Live Presentation  
 **Scenario Brief:** Cookies Reuse & MFA Bypass (Admin Feedback System)  
 
