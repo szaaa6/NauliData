@@ -1,0 +1,23 @@
+﻿2026-10-09T18:50:15+07:00 [WAF] blocked <script> tag from 10.10.14.50 status=403
+2026-10-09T18:53:10+07:00 [CRITICAL] Authentication bypass anomaly: cookie reuse observed; /api/verify-mfa was not reached.
+2026-10-09T18:53:11+07:00 [CRITICAL] Cookie reuse event from 10.10.14.50; investigate session replay and XSS evidence.
+2026-10-09T05:43:07.832Z [WAF] blocked <script> tag from 172.20.0.1 status=403
+2026-10-09T05:43:07.857Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T05:54:49.187Z [WAF] blocked <script> tag from 172.20.0.1 status=403
+2026-10-09T05:54:49.213Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T05:57:28.159Z [WAF] blocked <script> tag from 172.20.0.1 status=403
+2026-10-09T05:57:28.208Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:07:02.310Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:08:12.055Z [WAF] blocked <script> tag from 172.20.0.1 status=403
+2026-10-09T06:11:49.173Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:12:02.167Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:12:10.310Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:12:22.785Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:15:33.921Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:16:48.063Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:59:34.874Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T06:59:48.162Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T07:06:03.119Z [WAF] blocked <script> tag from 172.20.0.1 status=403
+2026-10-09T07:06:03.153Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T07:13:49.778Z [WAF] blocked <script> tag from 172.20.0.1 status=403
+2026-10-09T07:13:49.848Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached

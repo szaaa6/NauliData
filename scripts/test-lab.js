@@ -1,0 +1,117 @@
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const HOST = '127.0.0.1';
+const PORT = 3075;
+const logResults = [];
+
+function logTest(name, passed, details = '') {
+  const result = { name, passed, details };
+  logResults.push(result);
+  const status = passed ? '✅ PASS' : '❌ FAIL';
+  console.log(`${status}: ${name} ${details ? '- ' + details : ''}`);
+}
+
+function request(options, postData = null) {
+  return new Promise((resolve, reject) => {
+    const req = http.request(options, (res) => {
+      let body = '';
+      res.on('data', chunk => body += chunk);
+      res.on('end', () => resolve({ statusCode: res.statusCode, headers: res.headers, body }));
+    });
+    req.on('error', err => reject(err));
+    if (postData) req.write(postData);
+    req.end();
+  });
+}
+
+async function runTests() {
+  console.log('==================================================');
+  console.log('  AUTOMATED TESTING SUITE — NAULI CYBER RANGE LAB ');
+  console.log('==================================================\n');
+
+  try {
+    // Test 1: Health Endpoint
+    const health = await request({ hostname: HOST, port: PORT, path: '/health', method: 'GET' });
+    logTest('Health Check (/health)', health.statusCode === 200 && health.body.includes('"ok":true'), `Status: ${health.statusCode}`);
+
+    // Test 2: X-Powered-By Header
+    const home = await request({ hostname: HOST, port: PORT, path: '/', method: 'GET' });
+    const xPoweredBy = home.headers['x-powered-by'];
+    logTest('X-Powered-By Header', xPoweredBy === 'SCENARIO75{Node.js}', `Header: ${xPoweredBy}`);
+
+    // Test 3: Pre-MFA Cookie Initialization
+    const setCookie = home.headers['set-cookie'] ? home.headers['set-cookie'][0] : '';
+    logTest('Pre-MFA Cookie Initialization', setCookie.includes('pre_mfa_session=pending_mfa_verification') && !setCookie.includes('HttpOnly'), `Set-Cookie: ${setCookie}`);
+
+    // Test 4: Robots.txt Disallowed Path
+    const robots = await request({ hostname: HOST, port: PORT, path: '/robots.txt', method: 'GET' });
+    logTest('Robots.txt Disallow Path', robots.body.includes('Disallow: /api/verify-mfa'), `Disallow Path: /api/verify-mfa`);
+
+    // Test 5: WAF Block on <script> Tag (HTTP 403)
+    const scriptPayload = 'feedback=' + encodeURIComponent('<script>alert("xss")</script>');
+    const wafBlock = await request({
+      hostname: HOST, port: PORT, path: '/feedback', method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(scriptPayload) }
+    }, scriptPayload);
+    logTest('WAF Block on <script> Tag', wafBlock.statusCode === 403, `Status Code: ${wafBlock.statusCode}`);
+
+    // Test 6: WAF Bypass using <svg> Tag (HTTP 200)
+    const svgPayload = 'feedback=' + encodeURIComponent('<svg onload="window[\'docu\'+\'ment\'][\'coo\'+\'kie\']">');
+    const wafBypass = await request({
+      hostname: HOST, port: PORT, path: '/feedback', method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(svgPayload) }
+    }, svgPayload);
+    logTest('WAF Bypass using <svg> Tag', wafBypass.statusCode === 200 && wafBypass.body.includes('Feedback Received'), `Status Code: ${wafBypass.statusCode}`);
+
+    // Test 7: Unauthorized Dashboard Access (HTTP 401)
+    const dashUnauthorized = await request({
+      hostname: HOST, port: PORT, path: '/dashboard', method: 'GET',
+      headers: { 'Cookie': 'pre_mfa_session=pending_mfa_verification' }
+    });
+    logTest('Dashboard Unauthorized Access (No adm_sess)', dashUnauthorized.statusCode === 401, `Status Code: ${dashUnauthorized.statusCode}`);
+
+    // Test 8: Dashboard Authorized Access via Session Replay (HTTP 200 & Red Flag)
+    const dashAuthorized = await request({
+      hostname: HOST, port: PORT, path: '/dashboard', method: 'GET',
+      headers: { 'Cookie': 'pre_mfa_session=pending_mfa_verification; adm_sess=adm_sess_stolen_admin_token' }
+    });
+    const containsRedFlag = dashAuthorized.body.includes('SCENARIO75{RED_C00k13_MFA_Byp4ss_0wn3d}');
+    const containsXSSContainer = dashAuthorized.body.includes('xss-payload');
+    logTest('Dashboard Session Replay Access & Flag Verification', dashAuthorized.statusCode === 200 && containsRedFlag && containsXSSContainer, `Status: ${dashAuthorized.statusCode}, Red Flag Found: ${containsRedFlag}`);
+
+    // Test 9: Telemetry Log Existence & Indicators
+    const logsDir = path.join(__dirname, '..', 'logs');
+    const accessLogPath = path.join(logsDir, 'access.log');
+    const errorLogPath = path.join(logsDir, 'error.log');
+    
+    const accessLogExists = fs.existsSync(accessLogPath);
+    const errorLogExists = fs.existsSync(errorLogPath);
+
+    let logContentOk = false;
+    if (accessLogExists && errorLogExists) {
+      const accessContent = fs.readFileSync(accessLogPath, 'utf8');
+      const errorContent = fs.readFileSync(errorLogPath, 'utf8');
+      
+      const hasAttackerIP = accessContent.includes('10.10.14.50');
+      const hasDashboardTimestamp = accessContent.includes('18:51:55');
+      const hasBase64Exfil = accessContent.includes('UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}');
+      const hasWafErrorTimestamp = errorContent.includes('18:50:15');
+      const hasAnomalyTimestamp = errorContent.includes('18:53:10') && errorContent.includes('Authentication bypass anomaly');
+      
+      logContentOk = hasAttackerIP && hasDashboardTimestamp && hasBase64Exfil && hasWafErrorTimestamp && hasAnomalyTimestamp;
+    }
+    logTest('Telemetry Log Forensics & Indicator Verification', accessLogExists && errorLogExists && logContentOk, `Log Files Exists: ${accessLogExists && errorLogExists}, Telemetry Indicators Valid: ${logContentOk}`);
+
+    console.log('\n==================================================');
+    const totalPassed = logResults.filter(r => r.passed).length;
+    console.log(`  SUMMARY: ${totalPassed} / ${logResults.length} TESTS PASSED`);
+    console.log('==================================================\n');
+
+  } catch (err) {
+    console.error('❌ Test suite execution error:', err);
+  }
+}
+
+runTests();

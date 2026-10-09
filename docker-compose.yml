@@ -1,0 +1,33 @@
+services:
+  admin-feedback:
+    build: .
+    container_name: nauli-admin-feedback
+    ports:
+      - "3075:3075"
+    environment:
+      - LOG_DIR=/opt/admin/logs
+    volumes:
+      - ./logs:/opt/admin/logs
+    restart: unless-stopped
+    networks:
+      - cyber-range
+  blue-ssh:
+    image: lscr.io/linuxserver/openssh-server:latest
+    container_name: nauli-blue-ssh
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - USER_NAME=analyst
+      - USER_PASSWORD=blue_team_rocks
+      - PASSWORD_ACCESS=true
+      - SUDO_ACCESS=false
+    ports:
+      - "2275:2222"
+    volumes:
+      - ./logs:/opt/admin/logs:ro
+    restart: unless-stopped
+    networks:
+      - cyber-range
+networks:
+  cyber-range:
+    driver: bridge
