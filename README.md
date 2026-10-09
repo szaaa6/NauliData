@@ -148,7 +148,8 @@ docker compose ps
 | **Blue Team - Phase 3** | Cookie Reuse Log Severity Level | `SCENARIO75{CRITICAL}` |
 | **Blue Team - Phase 3** | Anomaly Log Timestamp | `SCENARIO75{18:53:10}` |
 | **Blue Team - Phase 3** | Exact Security Warning String | `SCENARIO75{Authentication bypass anomaly}` |
-| **Blue Team - Phase 3** | **Final Blue Team Victory Flag** | `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}` |
+| **Blue Team - Phase 3** | **Final Blue Team Victory Flag** | `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}` *(Raw Decoded Log Payload: `PHANTOMGRID{BLUE_L0g_Hunt3r_M4st3r}`)* |
+
 
 ---
 
