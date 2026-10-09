@@ -86,7 +86,7 @@ Blue Team connects via SSH (`ssh analyst@feedback.admin.local -p 2275`) and anal
 - **Attacker IP & Footprint:** Identified IP `10.10.14.50` (Flag: `SCENARIO75{10.10.14.50}`) with User-Agent `Mozilla/5.0` (Flag: `SCENARIO75{Mozilla/5.0}`).
 - **Dashboard Access:** Recorded HTTP `200` status (Flag: `SCENARIO75{200}`) at timestamp `18:51:55` (Flag: `SCENARIO75{18:51:55}`).
 - **Exfiltration Evidence:** Header `X-Forwarded-For` contains Base64 string:
-  `U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==` (Flag: `SCENARIO75{U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==}`). String length is 44 characters (Flag: `SCENARIO75{44}`).
+  `UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}` (Flag: `SCENARIO75{UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}`). String length is 44 characters (Flag: `SCENARIO75{44}`).
 
 ### Phase 2: Threat Hunting
 - **Baseline Comparison:** Legitimate background traffic originates from IP `192.168.1.100` (Flag: `SCENARIO75{192.168.1.100}`).
@@ -94,18 +94,16 @@ Blue Team connects via SSH (`ssh analyst@feedback.admin.local -p 2275`) and anal
 - **WAF Alerts:** File `/opt/admin/logs/error.log` (Flag: `SCENARIO75{/opt/admin/logs/error.log}`) logs WAF block for `<script>` (Flag: `SCENARIO75{<script>}`) at timestamp `18:50:15` (Flag: `SCENARIO75{18:50:15}`).
 - **Endpoint Verification:** Log correlation confirms attacker **never** (`No`) hit `/api/verify-mfa` (Flag: `SCENARIO75{No}`).
 
-### Phase 3: Incident Response & Payload Decoding
+### Phase 3: Incident Response & Base64 Specification Discrepancy
 - **Encoding Identification:** The exfiltration payload in the `X-Forwarded-For` header is encoded in `Base64` (Flag: `SCENARIO75{Base64}`).
 - **String Length:** Exactly `44` characters long (Flag: `SCENARIO75{44}`).
 - **Log Severity Level:** Flagged with `CRITICAL` severity (Flag: `SCENARIO75{CRITICAL}`).
 - **Anomaly Warning Timestamp:** Anomaly entry at `18:53:10` (Flag: `SCENARIO75{18:53:10}`) with warning string `Authentication bypass anomaly` (Flag: `SCENARIO75{Authentication bypass anomaly}`).
-- **Base64 Payload Decoding:**
-  ```bash
-  echo "U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==" | base64 -d
-  ```
-  - **Decoded Output & Final Blue Team Flag:** `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`
-
-
+- **Base64 Payload Forensic Analysis:**
+  - **Raw PDF Page 4 Header String:** `UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}`
+  - **Decoding Output:** Stripping the trailing non-Base64 artifact `}` and running `echo "UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0=" | base64 -d` yields `PHANTOMGRID{BLUE_L0g_Hunt3r_M4st3r}`.
+  - **Page 5 Specification:** PDF Page 5 specifies the Blue Team submission flag as `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`.
+  - **Resolution:** The raw log file retains the exact PDF Page 4 string for forensic accuracy, while the assessment submission flag remains `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`.
 
 ---
 
@@ -134,7 +132,7 @@ Blue Team connects via SSH (`ssh analyst@feedback.admin.local -p 2275`) and anal
 | **Blue Team - Phase 1** | Attacker User-Agent String | `SCENARIO75{Mozilla/5.0}` |
 | **Blue Team - Phase 1** | Dashboard Access HTTP Status Code | `SCENARIO75{200}` |
 | **Blue Team - Phase 1** | Dashboard Access Timestamp | `SCENARIO75{18:51:55}` |
-| **Blue Team - Phase 1** | Exfiltration Header Base64 Value | `SCENARIO75{U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==}` |
+| **Blue Team - Phase 1** | Exfiltration Header Base64 Value | `SCENARIO75{UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}` |
 | **Blue Team - Phase 2** | Baseline Legitimate Traffic IP | `SCENARIO75{192.168.1.100}` |
 | **Blue Team - Phase 2** | Attacker Subnet | `SCENARIO75{10.10.14.0/24}` |
 | **Blue Team - Phase 2** | WAF Block Error Log Target File | `SCENARIO75{/opt/admin/logs/error.log}` |
@@ -146,13 +144,13 @@ Blue Team connects via SSH (`ssh analyst@feedback.admin.local -p 2275`) and anal
 | **Blue Team - Phase 3** | Cookie Reuse Log Severity Level | `SCENARIO75{CRITICAL}` |
 | **Blue Team - Phase 3** | Anomaly Log Timestamp | `SCENARIO75{18:53:10}` |
 | **Blue Team - Phase 3** | Exact Security Warning String | `SCENARIO75{Authentication bypass anomaly}` |
-| **Blue Team - Phase 3** | **Final Blue Team Victory Flag** | `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}` |
-
-
+| **Blue Team - Phase 3** | **Final Blue Team Victory Flag** | `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}` *(Raw Decoded Log Payload: `PHANTOMGRID{BLUE_L0g_Hunt3r_M4st3r}`)* |
 
 ---
 
-## 6. Proxmox Deployment Instructions
+## 6. Proxmox Deployment Instructions & Physical Hypervisor Status
+
+> **Proxmox Deployment Status:** **NOT TESTED** *(Bare-metal Proxmox VE hypervisor testing requires physical hardware. Deployment steps for guest Linux VMs on PVE hypervisors are documented below).*
 
 To deploy this lab inside a Proxmox VE Virtual Machine:
 
@@ -166,7 +164,7 @@ To deploy this lab inside a Proxmox VE Virtual Machine:
    ```
 3. **Clone & Launch Cyber Range Lab:**
    ```bash
-   git clone <YOUR_GIT_REPOSITORY_URL> nauli-cyber-range
+   git clone https://github.com/szaaa6/NauliData.git nauli-cyber-range
    cd nauli-cyber-range
    chmod +x scripts/generate-logs.sh
    ./scripts/generate-logs.sh

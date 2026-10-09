@@ -2,19 +2,12 @@
 2026-10-09T18:50:15+07:00 10.10.14.50 "POST /feedback HTTP/1.1" 403 "Mozilla/5.0" "X-Forwarded-For:-" waf_block=script
 2026-10-09T18:50:45+07:00 10.10.14.50 "POST /feedback HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" payload=svg_training
 2026-10-09T18:51:10+07:00 10.10.14.50 "GET /robots.txt HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" recon=true
-2026-10-09T18:51:55+07:00 10.10.14.50 "GET /dashboard HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==" session_replay=true
+2026-10-09T18:51:55+07:00 10.10.14.50 "GET /dashboard HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}" session_replay=true
 2026-10-09T18:52:20+07:00 192.168.1.100 "GET /health HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" baseline=legitimate
-2026-10-09T08:51:15.469Z 172.20.0.1 "GET /health HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:15.530Z 172.20.0.1 "GET / HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:15.572Z 172.20.0.1 "GET /robots.txt HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:15.603Z 172.20.0.1 "POST /feedback HTTP/1.1" 403 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:15.616Z 172.20.0.1 "POST /feedback HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:15.629Z 172.20.0.1 "GET /dashboard HTTP/1.1" 401 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:15.684Z 172.20.0.1 "GET /dashboard HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:17.525Z 172.20.0.1 "GET /health HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:17.553Z 172.20.0.1 "GET / HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:17.565Z 172.20.0.1 "GET /robots.txt HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:17.637Z 172.20.0.1 "POST /feedback HTTP/1.1" 403 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:17.689Z 172.20.0.1 "POST /feedback HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:17.738Z 172.20.0.1 "GET /dashboard HTTP/1.1" 401 "Mozilla/5.0" "X-Forwarded-For:-" 
-2026-10-09T08:51:17.810Z 172.20.0.1 "GET /dashboard HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
+2026-10-09T09:04:39.573Z 172.20.0.1 "GET /health HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
+2026-10-09T09:04:39.610Z 172.20.0.1 "GET / HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
+2026-10-09T09:04:39.616Z 172.20.0.1 "GET /robots.txt HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
+2026-10-09T09:04:39.700Z 172.20.0.1 "POST /feedback HTTP/1.1" 403 "Mozilla/5.0" "X-Forwarded-For:-" 
+2026-10-09T09:04:39.705Z 172.20.0.1 "POST /feedback HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 
+2026-10-09T09:04:39.711Z 172.20.0.1 "GET /dashboard HTTP/1.1" 401 "Mozilla/5.0" "X-Forwarded-For:-" 
+2026-10-09T09:04:39.720Z 172.20.0.1 "GET /dashboard HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" 

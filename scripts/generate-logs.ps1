@@ -10,7 +10,7 @@ if (-not (Test-Path -Path "logs")) {
 2026-10-09T18:50:15+07:00 10.10.14.50 "POST /feedback HTTP/1.1" 403 "Mozilla/5.0" "X-Forwarded-For:-" waf_block=script
 2026-10-09T18:50:45+07:00 10.10.14.50 "POST /feedback HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" payload=svg_training
 2026-10-09T18:51:10+07:00 10.10.14.50 "GET /robots.txt HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" recon=true
-2026-10-09T18:51:55+07:00 10.10.14.50 "GET /dashboard HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==" session_replay=true
+2026-10-09T18:51:55+07:00 10.10.14.50 "GET /dashboard HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}" session_replay=true
 2026-10-09T18:52:20+07:00 192.168.1.100 "GET /health HTTP/1.1" 200 "Mozilla/5.0" "X-Forwarded-For:-" baseline=legitimate
 '@ | Set-Content -Path "logs/access.log" -Encoding utf8
 

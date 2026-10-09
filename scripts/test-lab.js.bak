@@ -96,7 +96,7 @@ async function runTests() {
       
       const hasAttackerIP = accessContent.includes('10.10.14.50');
       const hasDashboardTimestamp = accessContent.includes('18:51:55');
-      const hasBase64Exfil = accessContent.includes('UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}');
+      const hasBase64Exfil = accessContent.includes('U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==');
       const hasWafErrorTimestamp = errorContent.includes('18:50:15');
       const hasAnomalyTimestamp = errorContent.includes('18:53:10') && errorContent.includes('Authentication bypass anomaly');
       

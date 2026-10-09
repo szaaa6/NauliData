@@ -1,7 +1,5 @@
 ﻿2026-10-09T18:50:15+07:00 [WAF] blocked <script> tag from 10.10.14.50 status=403
 2026-10-09T18:53:10+07:00 [CRITICAL] Authentication bypass anomaly: cookie reuse observed; /api/verify-mfa was not reached.
 2026-10-09T18:53:11+07:00 [CRITICAL] Cookie reuse event from 10.10.14.50; investigate session replay and XSS evidence.
-2026-10-09T08:51:15.595Z [WAF] blocked <script> tag from 172.20.0.1 status=403
-2026-10-09T08:51:15.678Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
-2026-10-09T08:51:17.616Z [WAF] blocked <script> tag from 172.20.0.1 status=403
-2026-10-09T08:51:17.755Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached
+2026-10-09T09:04:39.695Z [WAF] blocked <script> tag from 172.20.0.1 status=403
+2026-10-09T09:04:39.714Z CRITICAL Cookie reuse event from 172.20.0.1; Authentication bypass anomaly; /api/verify-mfa not reached

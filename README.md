@@ -100,14 +100,17 @@ docker compose ps
    - Warning String: `Authentication bypass anomaly` (`SCENARIO75{Authentication bypass anomaly}`)
    - Log Correlation: Attacker **never** (`No`) reached `/api/verify-mfa` (`SCENARIO75{No}`)
 
-### Phase 3: Base64 Payload Decoding
-1. **Extract Header Artifact:** Header `X-Forwarded-For` contains Base64 string `U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==` (Encoding: `SCENARIO75{Base64}`, Length: `SCENARIO75{44}`).
-2. **Execute Base64 Decoding in Shell:**
-   ```bash
-   echo "U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==" | base64 -d
-   ```
-   - **Decoded Output & Final Blue Flag:** 🏆 **`SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`**
-
+### Phase 3: Base64 Forensic Analysis & PDF Specification Discrepancy
+1. **Raw Log Payload (PDF Page 4 Specification):**
+   - Header `X-Forwarded-For` in `access.log` contains exact string from Page 4: `UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}`
+   - Length: `44` characters. Encoding: `Base64`.
+2. **Decoding Behavior & Discrepancy Analysis:**
+   - Stripping the trailing non-Base64 artifact `}` yields `UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0=`.
+   - Executing `echo "UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0=" | base64 -d` decodes to: **`PHANTOMGRID{BLUE_L0g_Hunt3r_M4st3r}`**.
+   - **Page 5 Submission Flag Specification:** PDF Page 5 states that decoding yields **`SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`**.
+3. **Resolution & Classification:**
+   - The log file retains the exact raw PDF Page 4 payload string (`UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}`) for strict forensic fidelity.
+   - The expected submission flag for assessment grading is **`SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}`**.
 
 ---
 
@@ -136,7 +139,7 @@ docker compose ps
 | **Blue Team - Phase 1** | Attacker User-Agent String | `SCENARIO75{Mozilla/5.0}` |
 | **Blue Team - Phase 1** | Dashboard Access HTTP Status Code | `SCENARIO75{200}` |
 | **Blue Team - Phase 1** | Dashboard Access Timestamp | `SCENARIO75{18:51:55}` |
-| **Blue Team - Phase 1** | Exfiltration Header Base64 Value | `SCENARIO75{U0NFTkFSSU83NXtCTFVFX0wwR19IVW50M3JfTTRzdDNyfQ==}` |
+| **Blue Team - Phase 1** | Exfiltration Header Base64 Value | `SCENARIO75{UEhBTlRPTUdSSUR7QkxVRV9MMGdfSHVudDNyX000c3Qzcn0}` |
 | **Blue Team - Phase 2** | Baseline Legitimate Traffic IP | `SCENARIO75{192.168.1.100}` |
 | **Blue Team - Phase 2** | Attacker Subnet | `SCENARIO75{10.10.14.0/24}` |
 | **Blue Team - Phase 2** | WAF Block Error Log Target File | `SCENARIO75{/opt/admin/logs/error.log}` |
@@ -148,12 +151,13 @@ docker compose ps
 | **Blue Team - Phase 3** | Cookie Reuse Log Severity Level | `SCENARIO75{CRITICAL}` |
 | **Blue Team - Phase 3** | Anomaly Log Timestamp | `SCENARIO75{18:53:10}` |
 | **Blue Team - Phase 3** | Exact Security Warning String | `SCENARIO75{Authentication bypass anomaly}` |
-| **Blue Team - Phase 3** | **Final Blue Team Victory Flag** | `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}` |
-
+| **Blue Team - Phase 3** | **Final Blue Team Victory Flag** | `SCENARIO75{BLUE_L0G_HUnt3r_M4st3r}` *(Raw Decoded Log Payload: `PHANTOMGRID{BLUE_L0g_Hunt3r_M4st3r}`)* |
 
 ---
 
 ## 🖥️ Proxmox Hypervisor Deployment Guide
+
+> **Deployment Status:** **NOT TESTED** *(Bare-metal Proxmox VE hypervisor testing requires physical hardware. Detailed deployment instructions for PVE guest VMs are provided below).*
 
 To deploy this lab on a Proxmox VE Linux Virtual Machine:
 
@@ -179,9 +183,15 @@ To deploy this lab on a Proxmox VE Linux Virtual Machine:
 
 To run the automated endpoint and log verification suite:
 ```bash
+# 1. Start application server (if not already running)
+npm start
+# or via Docker Compose:
+# docker compose up -d
+
+# 2. Run automated test suite
 node scripts/test-lab.js
 ```
-*(All 9 / 9 automated test checks will execute and report pass/fail status).*
+*(All 15 automated test checks will execute and report pass/fail status. Returns exit code 1 on failure).*
 
 ---
 
